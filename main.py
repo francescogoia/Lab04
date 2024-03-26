@@ -11,4 +11,4 @@ def main(page: ft.Page):
     view.setController(controller)
     view.add_content()
 
-ft.app(target=main)
+ft.app(target=main, view=ft.AppView.FLET_APP)
