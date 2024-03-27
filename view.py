@@ -32,11 +32,11 @@ class View(object):
                                          alignment=ft.MainAxisAlignment.START))
 
         # Add your stuff here
-        self._confermato_lingua = ft.TextField(value="you must select a language", width=250)
+        self._confermato_lingua = ft.Text(value="you must select a language", width=250)
         self._DdSelettore_lingua = ft.Dropdown(label = "Language", width=750, on_change=self._conferma_Selezione_lingua)
         self._fill_selettore_lingua()
 
-        self._confermato_algoritmo = ft.TextField(value="you must select an option", width=200)
+        self._confermato_algoritmo = ft.Text(value="you must select an option", width=200)
         self._DdSelettore_algoritmo = ft.Dropdown(label="Choose the research algorthm", width=250, on_change=self._conferma_Selezionato_algoritmo)
         self._fill_selettore_algortimo()
 
@@ -93,7 +93,17 @@ class View(object):
             self._confermato_algoritmo = ft.TextField(value="you must select an option", width=200)
         self.page.update()
 
+    def _resetta_campi(self):
+        self._DdSelettore_lingua.value = ""
+        self._DdSelettore_algoritmo.value = ""
+        self._testo_da_tradurre.value = ""
+        self._confermato_lingua = ft.TextField(value="you must select a language", width=250)
+        self._confermato_algoritmo = ft.TextField(value="you must select an option", width=200)
+
+        self.page.update()
+
     def _handleSpellCheck(self, e):
+
         if self._DdSelettore_lingua.value != "None" and self._DdSelettore_algoritmo.value != "None" and self._testo_da_tradurre.value != "":
             risultato = self.__controller.handleSentence(self._testo_da_tradurre.value, self._DdSelettore_lingua.value,
                                              self._DdSelettore_algoritmo.value)
@@ -101,12 +111,8 @@ class View(object):
                                                            f"parole errate:{risultato[0]}\n"
                                                            f"tempo richiesto: {risultato[1]}\n"))
             self.page.update()
-            self._DdSelettore_lingua.value = "None"
-            self._DdSelettore_algoritmo.value = "None"
-            self._testo_da_tradurre = "None"
-            self._conferma_Selezione_lingua
-            self._conferma_Selezionato_algoritmo
-            self.page.update()
+            self._resetta_campi()
 
         else:
-            pass
+            self._txt_output.controls.append(ft.Text("Errore, selezionare i campi e inserire una frase da controllare", color="red"))
+            self.page.update()
